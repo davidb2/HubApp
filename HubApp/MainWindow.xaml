@@ -1,0 +1,113 @@
+﻿<Window x:Class="HubApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:HubApp"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="350" Width="525">
+    <Grid>
+        <MediaElement 
+            Name="bgvideo"  
+            Source="Resources/bgvideo.mp4" 
+            Stretch="Fill"
+            Panel.ZIndex="0" />
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+
+
+            <materialDesign:Card 
+                TextElement.FontWeight="Medium"
+                TextElement.FontSize="14"
+                TextElement.FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
+                HorizontalAlignment="Stretch" 
+                VerticalAlignment="Stretch"
+                Panel.ZIndex="1"
+                Grid.Row="1"
+                Grid.Column="1"
+                Foreground="{DynamicResource MaterialDesignBody}"
+                Background="White">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="1*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid Name="textView">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1*" />
+                            <RowDefinition Height="4*" />
+                        </Grid.RowDefinitions>
+
+                        <Viewbox
+                            Grid.Row="1"
+                            Margin="10 10 10 10"
+                            StretchDirection="DownOnly">
+                            <TextBox
+                                Name="tweetText"
+                                TextWrapping="Wrap"
+                                VerticalAlignment="Top"
+                                FontSize="36"
+                                Width="{Binding ElementName=textView, Path=ActualWidth}"
+                                Height="Auto"
+                                AcceptsReturn="True"
+                                Text="Lorem ipsum"
+                                TextAlignment="Left"/>
+                        </Viewbox>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="25*" />
+                                <ColumnDefinition Width="5*" />
+                                <ColumnDefinition Width="70*" />
+                            </Grid.ColumnDefinitions>
+                            <materialDesign:Card 
+                                Grid.Column="0"
+                                VerticalAlignment="Stretch"
+                                HorizontalAlignment="Stretch"
+                                Margin ="1 1 1 1">
+                                <Image
+                                    Name="profilePic"
+                                    Source="https://not_an_image.png"
+                                    Stretch="Fill"/>
+                            </materialDesign:Card>
+                            <Viewbox
+                                Grid.Column="2">
+                                <TextBlock
+                                    Name="screenName"
+                                    TextAlignment="Left"
+                                    Foreground="Gray"
+                                    Text="@notAScreenName" />
+                            </Viewbox>
+                        </Grid>
+                    </Grid>
+                    <Grid
+                        Name="tweetMediaBg"
+                        Grid.Column="1"
+                        VerticalAlignment="Stretch"
+                        HorizontalAlignment="Stretch">
+                        <materialDesign:Card 
+                            VerticalAlignment="Stretch"
+                            HorizontalAlignment="Stretch"
+                            Margin="2 2 2 2"
+                            Background="Transparent"
+                            Grid.Column="1">
+                            <Image 
+                                Name="twitterMedia" 
+                                Source="https://not_an_image.png"   
+                                Stretch="Fill" />
+                        </materialDesign:Card>
+                    </Grid>
+                </Grid>
+            </materialDesign:Card>
+        </Grid>
+    </Grid>
+</Window>
