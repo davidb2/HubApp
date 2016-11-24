@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Linq;
+using System.Windows.Documents;
+using System.Globalization;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
@@ -97,6 +99,10 @@ namespace HubApp
                 var userPic = user.ProfileImageUrlHttps;
                 var screenName = user.ScreenName;
 
+                // Trace.WriteLine(tweet.FullText);
+                // Trace.WriteLine(TweetHelper.ParseTweet(tweet));
+
+                Trace.WriteLine(tweet.Url);
 
                 // go on Window thread and change the contents of the View 
                 Dispatcher.BeginInvoke(new Action(delegate ()
@@ -104,12 +110,14 @@ namespace HubApp
                     this.profilePic.Source = new BitmapImage(new Uri(userPic));
                     this.screenName.Text = string.Format("@{0}", screenName);
                     this.realName.Text = user.ToString();
-                    this.tweetText.Text = text;
-                    
+                    //this.tweetText.Text = text;
+
+                    AddTweetText(tweet);
+
                     this.tweetMediaBg.Background =
-                    new BrushConverter().ConvertFromString(
-                        string.Format("#{0}", user.ProfileBackgroundColor)
-                    ) as SolidColorBrush;
+                        new BrushConverter().ConvertFromString(
+                            string.Format("#{0}", user.ProfileBackgroundColor)
+                        ) as SolidColorBrush;
 
                     
                     if (tweet.Media[0].MediaType == "video" && tweet.Media[0].VideoDetails.Variants[0].URL.Last().Equals('4'))
@@ -141,12 +149,12 @@ namespace HubApp
         private void TwitterView_ReceivedPost(object sender, Tweetinvi.Events.MatchedTweetReceivedEventArgs args)
         {
             // add to the queue only if there is a picture in the tweet
-            if (args.Tweet.Media.Count > 0)
+            if (args.Tweet.Media.Count > 0) // && !args.Tweet.IsRetweet
             {
                 _tweetQueue.Enqueue(args.Tweet);
 
                 // debugging
-                Trace.WriteLine(string.Format("Tweets in Queue: {0}", _tweetQueue.Count));
+                // Trace.WriteLine(string.Format("Tweets in Queue: {0}", _tweetQueue.Count));
             }
         }
 
@@ -185,6 +193,49 @@ namespace HubApp
             // start video over
             this.bgvideo.Position = new TimeSpan(0, 0, 1);
             this.bgvideo.Play();
+        }
+
+        private void AddTweetText(ITweet tweet)
+        {
+            Trace.WriteLine(tweet.Text);
+            this.tweetText.Inlines.Clear();
+
+            List<EntityHelper> entities = TweetHelper.ParseTweet(tweet);
+
+            // map bytes to interpretable text
+            Dictionary<int, int> textMappings = new Dictionary<int, int>();
+            var textElementsEnumerator = StringInfo.GetTextElementEnumerator(tweet.Text);
+            int lastIndex = 0;
+            int byteLocation = 0;
+            while(textElementsEnumerator.MoveNext())
+            {
+                int textIndex = textElementsEnumerator.ElementIndex;
+                int textLength = textElementsEnumerator.Current.ToString().Length;
+                for (int j = 0; j < textLength; j++)
+                {
+                    textMappings.Add(byteLocation++, textIndex);
+                }
+                lastIndex = textIndex;
+            }
+            textMappings.Add(byteLocation, lastIndex);
+
+            // add colored text to textblock based on content
+            int last = 0;
+            foreach (var item in entities)
+            {
+                Trace.WriteLine(string.Format("\tActual entity: {0}", item.Text));
+                if (last <= item.Indice[0])
+                {
+                    this.tweetText.Inlines.Add(new Run(new StringInfo(tweet.Text).SubstringByTextElements(last, textMappings[item.Indice[0]] - last)));
+                    Trace.WriteLine(string.Format("\t{0}", new StringInfo(tweet.Text).SubstringByTextElements(last, textMappings[item.Indice[0]] - last)));
+                    this.tweetText.Inlines.Add(new Run(new StringInfo(tweet.Text).SubstringByTextElements(textMappings[item.Indice[0]], textMappings[item.Indice[1]] - textMappings[item.Indice[0]]))
+                    {
+                        Foreground = new BrushConverter().ConvertFromString("#55ACEE") as SolidColorBrush
+                    });
+                    Trace.WriteLine(string.Format("\t{0}", new StringInfo(tweet.Text).SubstringByTextElements(textMappings[item.Indice[0]], textMappings[item.Indice[1]] - textMappings[item.Indice[0]])));
+                }
+                last = textMappings[item.Indice[1]];
+            }
         }
     }
 }
