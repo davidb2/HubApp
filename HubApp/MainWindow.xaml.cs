@@ -25,6 +25,7 @@ namespace HubApp
         private const string TRACK = "#MannequinChallenge";
         private const int SLEEP_TIME = 5000;
         private const string DEFAULT_TWITTER_PIC = "https://camo.githubusercontent.com/93c261622c63780cb29c6423b0787c8de460aff6/687474703a2f2f636c6f75642e73636f74742e65652f696d616765732f6e756c6c2e706e67";
+        private const string TWITTER_BLUE = "#55ACEE";
         private WindowState _lastWindowState;
         private WindowStyle _lastWindowStyle;
         private Queue<ITweet> _tweetQueue;
@@ -152,9 +153,6 @@ namespace HubApp
             if (args.Tweet.Media.Count > 0) // && !args.Tweet.IsRetweet
             {
                 _tweetQueue.Enqueue(args.Tweet);
-
-                // debugging
-                // Trace.WriteLine(string.Format("Tweets in Queue: {0}", _tweetQueue.Count));
             }
         }
 
@@ -197,45 +195,59 @@ namespace HubApp
 
         private void AddTweetText(ITweet tweet)
         {
-            Trace.WriteLine(tweet.Text);
             this.tweetText.Inlines.Clear();
 
             List<EntityHelper> entities = TweetHelper.ParseTweet(tweet);
 
             // map bytes to interpretable text
-            Dictionary<int, int> textMappings = new Dictionary<int, int>();
+            int[] textMappings = new int[tweet.Text.Length+1];
             var textElementsEnumerator = StringInfo.GetTextElementEnumerator(tweet.Text);
             int lastIndex = 0;
             int byteLocation = 0;
+
             while(textElementsEnumerator.MoveNext())
             {
                 int textIndex = textElementsEnumerator.ElementIndex;
                 int textLength = textElementsEnumerator.Current.ToString().Length;
                 for (int j = 0; j < textLength; j++)
                 {
-                    textMappings.Add(byteLocation++, textIndex);
+                    textMappings[byteLocation++] = textIndex;
                 }
                 lastIndex = textIndex;
             }
-            textMappings.Add(byteLocation, lastIndex);
+            textMappings[byteLocation] = ++lastIndex;
 
             // add colored text to textblock based on content
             int last = 0;
             foreach (var item in entities)
             {
-                Trace.WriteLine(string.Format("\tActual entity: {0}", item.Text));
-                if (last <= item.Indice[0])
+                try
                 {
-                    this.tweetText.Inlines.Add(new Run(new StringInfo(tweet.Text).SubstringByTextElements(last, textMappings[item.Indice[0]] - last)));
-                    Trace.WriteLine(string.Format("\t{0}", new StringInfo(tweet.Text).SubstringByTextElements(last, textMappings[item.Indice[0]] - last)));
-                    this.tweetText.Inlines.Add(new Run(new StringInfo(tweet.Text).SubstringByTextElements(textMappings[item.Indice[0]], textMappings[item.Indice[1]] - textMappings[item.Indice[0]]))
+                    if (last <= item.Indice[0])
                     {
-                        Foreground = new BrushConverter().ConvertFromString("#55ACEE") as SolidColorBrush
-                    });
-                    Trace.WriteLine(string.Format("\t{0}", new StringInfo(tweet.Text).SubstringByTextElements(textMappings[item.Indice[0]], textMappings[item.Indice[1]] - textMappings[item.Indice[0]])));
+                        this.tweetText.Inlines.Add(new Run(new StringInfo(tweet.Text).SubstringByTextElements(last, textMappings[item.Indice[0]] - last)));
+                        this.tweetText.Inlines.Add(new Run(new StringInfo(tweet.Text).SubstringByTextElements(textMappings[item.Indice[0]], textMappings[item.Indice[1]] - textMappings[item.Indice[0]]))
+                        {
+                            Foreground = new BrushConverter().ConvertFromString(TWITTER_BLUE) as SolidColorBrush
+                        });
+                    }
+                    last = textMappings[item.Indice[1]];
                 }
-                last = textMappings[item.Indice[1]];
+                catch 
+                {
+                    // it's an encoding problem
+                    // fail silenty...
+                    this.tweetText.Inlines.Clear();
+                    this.tweetText.Text = tweet.Text;
+                    break;
+                }
             }
+        }
+
+        protected override void OnClosed(EventArgs e)
+        {
+            base.OnClosed(e);
+            Application.Current.Shutdown();
         }
     }
 }
