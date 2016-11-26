@@ -78,7 +78,8 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="25*" />
                                 <ColumnDefinition Width="5*" />
-                                <ColumnDefinition Width="70*" />
+                                <ColumnDefinition Width="65*" />
+                                <ColumnDefinition Width="5*"/>
                             </Grid.ColumnDefinitions>
                             <materialDesign:Card 
                                 Grid.Column="0"
