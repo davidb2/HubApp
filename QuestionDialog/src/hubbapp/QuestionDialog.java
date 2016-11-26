@@ -88,7 +88,7 @@ public class QuestionDialog extends JFrame {
 		
 		selectPanel.add(auto);
 		selectPanel.add(manual);
-		selectPanel.add(Box.createRigidArea(new Dimension(0,50)));
+		selectPanel.add(Box.createRigidArea(new Dimension(0, 50)));
 		selectPanel.add(jl);
 		selectPanel.add(jtf);
 		selectPanel.add(confTimer);
