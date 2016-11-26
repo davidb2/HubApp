@@ -19,138 +19,202 @@
             </Grid.Resources>
             <Grid.RowDefinitions>
                 <RowDefinition Height="1*"/>
-                <RowDefinition Height="1*"/>
+                <RowDefinition Height="2*"/>
                 <RowDefinition Height="1*"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*"/>
-                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="2*"/>
                 <ColumnDefinition Width="1*"/>
             </Grid.ColumnDefinitions>
 
-            <materialDesign:Card 
-                TextElement.FontWeight="Light"
-                TextElement.FontSize="14"
-                TextElement.FontFamily="{StaticResource HelveticaNeueLight}"
-                HorizontalAlignment="Stretch" 
-                VerticalAlignment="Stretch"
-                Panel.ZIndex="1"
-                Grid.Row="1"
-                Grid.Column="1"
-                Foreground="{DynamicResource MaterialDesignBody}"
-                Background="White">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1*" />
-                        <ColumnDefinition Width="1*" />
-                    </Grid.ColumnDefinitions>
-                    <Grid Name="textView">
+            <Grid Grid.Row="0" Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="2*"/>
+                    <RowDefinition Height="1*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                <Viewbox Grid.Row="1" 
+                    Grid.Column="1">
+                    <TextBlock 
+                        Name="lrn"
+                        Foreground="White"
+                        Text="LIVE RIGHT NOW"
+                        HorizontalAlignment="Stretch"
+                        FontWeight="DemiBold"
+                        VerticalAlignment="Stretch"
+                        TextAlignment="Center">
+                        <TextBlock.TextDecorations>
+                            <TextDecorationCollection>
+                                <TextDecoration  
+                                    PenThicknessUnit="FontRecommended"
+                                    PenOffset="1.5">
+                                    <TextDecoration.Pen>
+                                        <Pen Thickness="0.1">
+                                            <Pen.Brush>
+                                                <LinearGradientBrush 
+                                                    Opacity="0.4"
+                                                    StartPoint="0,0.5"  
+                                                    EndPoint="1,0.5">
+                                                    <LinearGradientBrush.GradientStops>
+                                                        <GradientStop Color="Gray" Offset="0" />
+                                                        <GradientStop Color="Gray" Offset="1" />
+                                                    </LinearGradientBrush.GradientStops>
+                                                </LinearGradientBrush>
+                                            </Pen.Brush>
+                                        </Pen>
+                                    </TextDecoration.Pen>
+                                </TextDecoration>
+                            </TextDecorationCollection>
+                        </TextBlock.TextDecorations>
+                    </TextBlock>
+                </Viewbox>
+            </Grid>
+
+
+            <Border CornerRadius="25" Grid.Row="1" Grid.Column="1" BorderThickness="10" >
+                <Border.BorderBrush>
+                    <SolidColorBrush Color ="White" Opacity="0.05" />
+                </Border.BorderBrush>
+                <Border.Background>
+                    <SolidColorBrush Color ="White" Opacity="0.05" />
+                </Border.Background>
+                <Grid
+                    TextElement.FontWeight="Light"
+                    TextElement.FontSize="14"
+                    TextElement.FontFamily="{StaticResource HelveticaNeueLight}"
+                    TextElement.Foreground="White"
+                    HorizontalAlignment="Stretch" 
+                    VerticalAlignment="Stretch"
+                    Panel.ZIndex="1">
+
+                    <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="1*" />
-                            <RowDefinition Height="4*" />
+                            <RowDefinition Height="2*" />
                         </Grid.RowDefinitions>
-                        <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="5*" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Grid Name="textView" Grid.Row="0" Grid.Column="1">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="1*" />
-                                <RowDefinition Height="20*" />
-                                <RowDefinition Height="1*" />
+                                <RowDefinition Height="2*" />
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="1*" />
-                                <ColumnDefinition Width="20*" />
-                                <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="6*" />
                             </Grid.ColumnDefinitions>
 
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="2*" />
+                                    <ColumnDefinition Width="1*" />
+                                </Grid.ColumnDefinitions>
+                                <materialDesign:Card 
+                                    Grid.Column="0"
+                                    VerticalAlignment="Stretch"
+                                    HorizontalAlignment="Stretch"
+                                    Margin ="1 1 1 1">
+                                    <Image
+                                        Name="profilePic"
+                                        Source="https://not_an_image.png"
+                                        Stretch="Fill"/>
+                                </materialDesign:Card>
+                            </Grid>
 
-                            <TextBlock
-                                Name="tweetText"
-                                Grid.Row="1"
-                                Grid.Column="1"
-                                TextWrapping="Wrap"
-  
-                                VerticalAlignment="Stretch"
-                                HorizontalAlignment="Left"
-                                FontSize="10"
-                                Text="____________________________________________________________________________________________________________________________________________"
-                                TextAlignment="Left"/>
-                        </Grid>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="25*" />
-                                <ColumnDefinition Width="5*" />
-                                <ColumnDefinition Width="65*" />
-                                <ColumnDefinition Width="5*"/>
-                            </Grid.ColumnDefinitions>
-                            <materialDesign:Card 
-                                Grid.Column="0"
-                                VerticalAlignment="Stretch"
-                                HorizontalAlignment="Stretch"
-                                Margin ="1 1 1 1">
-                                <Image
-                                    Name="profilePic"
-                                    Source="https://not_an_image.png"
-                                    Stretch="Fill"/>
-                            </materialDesign:Card>
-
-                            <Grid Grid.Column="2">
+                            <Grid Grid.Row="1" Grid.Column="1">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="1*" />
+                                    <RowDefinition Height="20*" />
                                     <RowDefinition Height="1*" />
                                 </Grid.RowDefinitions>
-                                <Grid Grid.Row="0">
-                                    <Viewbox HorizontalAlignment="Left">
-                                        <TextBlock
-                                            Name="realName"
+
+
+                                <TextBlock
+                                    Name="tweetText"
+                                    Grid.Row="1"
+                                    TextWrapping="Wrap"
+  
+                                    VerticalAlignment="Stretch"
+                                    HorizontalAlignment="Left"
+                                    FontSize="10"
+                                    Text="____________________________________________________________________________________________________________________________________________"
+                                    TextAlignment="Left"/>
+                            </Grid>
+                            <Grid Grid.Row="0" Grid.Column="1">
+
+                                <Grid Grid.Column="2">
+                                    <Grid Grid.Row="0">
+                                        <Viewbox HorizontalAlignment="Left">
+                                            <TextBlock
+                                            Name="realNameAndScreenName"
                                             TextAlignment="Left"
-                                            Text="notARealname" 
+                                            Text="notARealname @notARealScreenName" 
                                             FontWeight="DemiBold"
                                             VerticalAlignment="Stretch"
                                             HorizontalAlignment="Stretch" />
-                                    </Viewbox>
+                                        </Viewbox>
+                                    </Grid>
                                 </Grid>
-
-                                <Grid Grid.Row="1">
-                                    <Viewbox HorizontalAlignment="Left">
-                                        <TextBlock
-                                            Name="screenName"
-                                            TextAlignment="Left"
-                                            Foreground="Gray"
-                                            Text="@notAScreenName" />
-                                    </Viewbox>
+                            </Grid>
+                        </Grid>
+                        <Grid
+                            Name="tweetMediaBg"
+                            VerticalAlignment="Stretch"
+                            HorizontalAlignment="Stretch"
+                            Grid.Row="1"
+                            Grid.Column="1">
+                            <Grid
+                                VerticalAlignment="Stretch"
+                                HorizontalAlignment="Stretch"
+                                Background="Transparent">
+                                <Grid>
+                                    <MediaElement 
+                                        Name="twitterVideo" 
+                                        Stretch="Fill" 
+                                        Visibility="Hidden" />
+                                    <Image
+                                        Name="twitterMedia" 
+                                        Source="https://not_an_image.png"   
+                                        Stretch="Fill"
+                                        Visibility="Hidden" />
                                 </Grid>
                             </Grid>
                         </Grid>
                     </Grid>
-                    <Grid
-                        Name="tweetMediaBg"
-                        Grid.Column="1"
-                        VerticalAlignment="Stretch"
-                        HorizontalAlignment="Stretch">
-                        <materialDesign:Card 
-                            VerticalAlignment="Stretch"
-                            HorizontalAlignment="Stretch"
-                            Background="Transparent"
-                            Grid.Column="1">
-                            <Grid>
-                                <MediaElement 
-                                    Name="twitterVideo" 
-                                    
-                                    Stretch="Fill" 
-                                    Grid.Row="1" 
-                                    Visibility="Hidden"
-                                    Grid.Column="1" />
-                                <Image
-                                    Name="twitterMedia" 
-                                    Source="https://not_an_image.png"   
-                                    Stretch="Fill"
-                                    Grid.Row="1"
-                                    Visibility="Hidden"
-                                    Grid.Column="1" />
-                            </Grid>
-                        </materialDesign:Card>
-                    </Grid>
                 </Grid>
-            </materialDesign:Card>
+            </Border>
+            <Grid Grid.Row="2" Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="4*"/>
+                    <RowDefinition Height="1*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="4*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+
+                <Viewbox Grid.Row="1" Grid.Column="1">
+                    <TextBlock
+                        Name="tags"
+                        Foreground="White"
+                        Text="Show us your pics! "
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        TextAlignment="Center"/>
+                </Viewbox>
+            </Grid>
         </Grid>
     </Grid>
 </Window>
