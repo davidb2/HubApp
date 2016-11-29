@@ -23,7 +23,7 @@ import javax.swing.JButton;
 
 public class QuestionDialog extends JFrame {
 	private JTextArea jta;
-	private JTextField questionarea, answerarea, timer;
+	private JTextField questionarea, answer1, answer2, answer3, answer4, timer; 
 	private int delay;
 	private boolean waiting;
 	public static void main(String[] args){
@@ -94,11 +94,20 @@ public class QuestionDialog extends JFrame {
 			questionarea.setSize(200,40);
 			mainPanel.add(questionarea);
 			mainPanel.add(Box.createRigidArea(new Dimension(300,30)));
-			JLabel answerlabel = new JLabel("Answer: ");
+			JLabel answerlabel = new JLabel("Answer: [CORRECT FIRST]");
 			mainPanel.add(answerlabel);
-			answerarea = new JTextField("");
-			answerarea.setSize(200,40);
-			mainPanel.add(answerarea);
+			answer1 = new JTextField("");
+			answer1.setSize(200,40);
+			mainPanel.add(answer1);
+			answer2 = new JTextField("");
+			answer2.setSize(200,40);
+			mainPanel.add(answer2);
+			answer3 = new JTextField("");
+			answer3.setSize(200,40);
+			mainPanel.add(answer3);
+			answer4 = new JTextField("");
+			answer4.setSize(200,40);
+			mainPanel.add(answer4);
 			JButton confquestion = new JButton("Submit");
 			confquestion.addActionListener(new ActionListener(){
 				public void actionPerformed(ActionEvent e){
@@ -107,15 +116,15 @@ public class QuestionDialog extends JFrame {
 							try{
 								waiting = true;
 								showMessage(questionarea.getText());
-								outputMessage(questionarea.getText());
+								outputMessage(questionarea.getText()+'\n'+answer1.getText()+'\n'+answer2.getText()+'\n'+answer3.getText()+'\n'+answer4.getText());
 								for(int i=delay-1;i>=0;i--){
 									String seconds = "0"+(i%60);
 									timer.setText((i/60)+":"+seconds.substring(seconds.length()-2,seconds.length()));
 									Thread.sleep(1000);
 								}
 								waiting = false;
-								showMessage(answerarea.getText());
-								outputMessage(answerarea.getText());
+								showMessage(answer1.getText());
+								outputMessage(answer1.getText());
 							}catch(InterruptedException ie){waiting = false;showMessage("Thread Error");}
 						}
 					};
