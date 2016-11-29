@@ -43,6 +43,7 @@ namespace HubApp
         private void InitializeTwitterStream()
         {
             Thread thread = new Thread(TwitterView_StartStreaming);
+            thread.IsBackground = true;
             thread.Start();
         }
 
@@ -50,6 +51,7 @@ namespace HubApp
         {
             _tweetQueue = new Queue<ITweet>();
             Thread thread = new Thread(TwitterView_Queue);
+            thread.IsBackground = true;
             thread.Start();
         }
 
@@ -67,6 +69,10 @@ namespace HubApp
 
         private void InitializeWindowOptions()
         {
+            this.tags.Inlines.Add(new Run(TRACK)
+            {
+                Foreground = new BrushConverter().ConvertFromString(TWITTER_BLUE) as SolidColorBrush
+            });
             _lastWindowState = this.WindowState;
             _lastWindowStyle = this.WindowStyle;
             this.KeyDown += new KeyEventHandler(MainWindow_KeyDown);
@@ -94,50 +100,30 @@ namespace HubApp
                 // get first tweet out of queue
                 ITweet tweet = _tweetQueue.Dequeue();
                 var link = tweet.Url;
-                var user = tweet.CreatedBy;
-                var text = tweet.FullText;
-                var media = tweet.Media.Count == 0 ? DEFAULT_TWITTER_PIC : tweet.Media[0].MediaURL;
-                var userPic = user.ProfileImageUrlHttps;
-                var screenName = user.ScreenName;
 
-                // Trace.WriteLine(tweet.FullText);
-                // Trace.WriteLine(TweetHelper.ParseTweet(tweet));
 
                 Trace.WriteLine(tweet.Url);
 
                 // go on Window thread and change the contents of the View 
-                Dispatcher.BeginInvoke(new Action(delegate ()
+                Dispatcher.BeginInvoke(new Action(delegate()
                 {
-                    this.profilePic.Source = new BitmapImage(new Uri(userPic));
-                    this.screenName.Text = string.Format("@{0}", screenName);
-                    this.realName.Text = user.ToString();
-                    //this.tweetText.Text = text;
-
+                    AddProfilePic(tweet);
+                    AddName(tweet);
                     AddTweetText(tweet);
 
-                    this.tweetMediaBg.Background =
-                        new BrushConverter().ConvertFromString(
-                            string.Format("#{0}", user.ProfileBackgroundColor)
-                        ) as SolidColorBrush;
+                    //this.tweetMediaBg.Background =
+                    //    new BrushConverter().ConvertFromString(
+                    //        string.Format("#{0}", user.ProfileBackgroundColor)
+                    //    ) as SolidColorBrush;
 
                     
-                    if (tweet.Media[0].MediaType == "video" && tweet.Media[0].VideoDetails.Variants[0].URL.Last().Equals('4'))
+                    if (tweet.Media[0].MediaType.Equals("video") && tweet.Media[0].VideoDetails.Variants[0].URL.Last().Equals('4'))
                     {
-                        this.twitterMedia.Visibility = Visibility.Hidden;
-                        this.twitterVideo.Visibility = Visibility.Visible;
-
-                        this.twitterMedia.Source = null;
-
-                        // Convert https to http if need be
-                        this.twitterVideo.Source = new Uri(tweet.Media[0].VideoDetails.Variants[0].URL.Remove(4, 1));
+                        AddMediaVideo(tweet);
                     }
                     else
                     {
-                        this.twitterVideo.Visibility = Visibility.Hidden;
-                        this.twitterMedia.Visibility = Visibility.Visible;
-
-                        this.twitterVideo.Source = null;
-                        this.twitterMedia.Source = new BitmapImage(new Uri(media));
+                        AddMediaPic(tweet);
                     }
 
                     
@@ -242,6 +228,50 @@ namespace HubApp
                     break;
                 }
             }
+        }
+
+        private void AddName(ITweet tweet)
+        {
+            var user = tweet.CreatedBy;
+            var screenName = user.ScreenName;
+
+            this.realNameAndScreenName.Inlines.Clear();
+            this.realNameAndScreenName.Inlines.Add(new Run(user.ToString()));
+            this.realNameAndScreenName.Inlines.Add(new Run(" "));
+            this.realNameAndScreenName.Inlines.Add(new Run(string.Format("@{0}", screenName))
+            {
+                Foreground = Brushes.Gray,
+                FontWeight = FontWeights.Light,
+
+            });
+        }
+
+        private void AddProfilePic(ITweet tweet)
+        {
+            var userPic = tweet.CreatedBy.ProfileImageUrlHttps;
+            this.profilePic.Source = new BitmapImage(new Uri(userPic));
+        }
+
+        private void AddMediaVideo(ITweet tweet)
+        {
+            this.twitterMedia.Visibility = Visibility.Hidden;
+            this.twitterVideo.Visibility = Visibility.Visible;
+
+            this.twitterMedia.Source = null;
+
+            // Convert https to http if need be
+            this.twitterVideo.Source = new Uri(tweet.Media[0].VideoDetails.Variants[0].URL.Remove(4, 1));
+        }
+
+        private void AddMediaPic(ITweet tweet)
+        {
+            var media = tweet.Media.Count == 0 ? DEFAULT_TWITTER_PIC : tweet.Media[0].MediaURL;
+
+            this.twitterVideo.Visibility = Visibility.Hidden;
+            this.twitterMedia.Visibility = Visibility.Visible;
+
+            this.twitterVideo.Source = null;
+            this.twitterMedia.Source = new BitmapImage(new Uri(media));
         }
 
         protected override void OnClosed(EventArgs e)

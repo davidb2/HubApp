@@ -244,3 +244,12 @@ ModelManifest.xml
 # Other files
 Deployment/
 *.rar
+*.javac
+.classpath
+.project
+output.txt
+.settings
+bin/
+.recommenders/
+.idea/
+.metadata/
