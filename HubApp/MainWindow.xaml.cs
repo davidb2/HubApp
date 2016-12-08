@@ -12,6 +12,7 @@ using System.Threading;
 using System.Diagnostics;
 using HubApp.Twitter;
 using Tweetinvi.Models;
+using Tweetinvi.Streaming;
 using Tweetinvi;
 
 
@@ -22,22 +23,32 @@ namespace HubApp
     /// </summary>
     public partial class MainWindow : Window
     {
-        private const string TRACK = "#MannequinChallenge";
+
         private const int SLEEP_TIME = 5000;
         private const string DEFAULT_TWITTER_PIC = "https://camo.githubusercontent.com/93c261622c63780cb29c6423b0787c8de460aff6/687474703a2f2f636c6f75642e73636f74742e65652f696d616765732f6e756c6c2e706e67";
         private const string TWITTER_BLUE = "#55ACEE";
+        private const string SHOW_PICS = "Show us your pics! ";
         private WindowState _lastWindowState;
         private WindowStyle _lastWindowStyle;
         private Queue<ITweet> _tweetQueue;
+        private IFilteredStream _tweetStream;
+        private string _track = "#MannequinChallenge";
 
         public MainWindow()
         {
             InitializeComponent();
+            InitializeTwitterQueue();
             InitializeTwitterStream();
             InitializeTwitterCard();
-            InitializeTwitterQueue();
             InitializeBackgroundVideo();
             InitializeWindowOptions();
+            InitializeGUIWindow();
+        }
+
+        private void InitializeGUIWindow()
+        {
+            GUIWindow window = new GUIWindow(this);
+            window.Show();
         }
 
         private void InitializeTwitterStream()
@@ -45,6 +56,21 @@ namespace HubApp
             Thread thread = new Thread(TwitterView_StartStreaming);
             thread.IsBackground = true;
             thread.Start();
+        }
+
+
+        public void SetTrack(String track)
+        {
+            this._track = track;
+            this.tags.Inlines.Clear();
+            this.tags.Inlines.Add(SHOW_PICS);
+            this.tags.Inlines.Add(new Run(this._track)
+            {
+                Foreground = new BrushConverter().ConvertFromString(TWITTER_BLUE) as SolidColorBrush
+            });
+            _tweetQueue.Clear();
+            _tweetStream.StopStream();
+            InitializeTwitterStream();
         }
 
         private void InitializeTwitterQueue()
@@ -69,7 +95,7 @@ namespace HubApp
 
         private void InitializeWindowOptions()
         {
-            this.tags.Inlines.Add(new Run(TRACK)
+            this.tags.Inlines.Add(new Run(this._track)
             {
                 Foreground = new BrushConverter().ConvertFromString(TWITTER_BLUE) as SolidColorBrush
             });
@@ -83,14 +109,14 @@ namespace HubApp
         {
 
             TwitterView twitter = new TwitterView();
-            var tweetStream = Stream.CreateFilteredStream();
+            this._tweetStream = Stream.CreateFilteredStream();
 
             // add filter
-            tweetStream.AddTrack(TRACK);
+            _tweetStream.AddTrack(_track);
             // add action event
-            tweetStream.MatchingTweetReceived +=
+            _tweetStream.MatchingTweetReceived +=
                   new EventHandler<Tweetinvi.Events.MatchedTweetReceivedEventArgs>(TwitterView_ReceivedPost);
-            tweetStream.StartStreamMatchingAllConditions();
+            _tweetStream.StartStreamMatchingAllConditions();
         }
 
         private void TwitterView_Queue()

@@ -25,7 +25,7 @@ public class QuestionDialog extends JFrame {
 	private static final int SLEEP_TIME = 1000;
 	private static final int SECONDS_IN_MINUTE = 60;
 	private static final String OUTPUT_FILE = "output.txt";
-	private JTextArea jta, questionarea, answerarea, timer, jtf;
+	private JTextArea jta, questionarea, answerarea, timer, jtf, answer1, answer2, answer3, answer4;
 	private int delay;
 	private boolean waiting;
 	
