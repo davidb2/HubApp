@@ -1,0 +1,18 @@
+﻿<Window x:Class="HubApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:HubApp"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="350" Width="525">
+    <Grid>
+        <MediaElement 
+            Name="bgvideo"  
+            Source="Resources/bgvideo.mp4" 
+            Stretch="Fill"
+            Panel.ZIndex="0" />
+        <Frame Name="mainFrame" Background="Transparent" NavigationUIVisibility="Hidden"/>
+    </Grid>
+</Window>

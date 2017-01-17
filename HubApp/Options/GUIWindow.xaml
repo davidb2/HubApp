@@ -1,0 +1,38 @@
+﻿<Window x:Class="HubApp.GUIWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:dragablz="clr-namespace:Dragablz;assembly=Dragablz"
+        xmlns:local="clr-namespace:HubApp"
+        mc:Ignorable="d"
+        Title="GUIWindow" Height="300" Width="300">
+  
+    <Grid>
+        <dragablz:TabablzControl Name="tabControl" SelectionChanged="GUIWindow_TabSelected">
+            <TabItem Name="twitter">
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Twitter" Foreground="White" />
+                    </StackPanel>
+                </TabItem.Header>
+                <Frame Source="Pages/TwitterStreamOptions.xaml" Name="twitterPage" NavigationUIVisibility="Hidden"/>
+            </TabItem>
+            <TabItem Name="trivia">
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Trivia" Foreground="White" />
+                    </StackPanel>
+                </TabItem.Header>
+                <Frame Source="Pages/TriviaOptions.xaml" Name="triviaPage" NavigationUIVisibility="Hidden"/>
+            </TabItem>
+            <TabItem Name="sports">
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Sports" Foreground="White" />
+                    </StackPanel>
+                </TabItem.Header>
+            </TabItem>
+        </dragablz:TabablzControl>
+    </Grid>
+</Window>
