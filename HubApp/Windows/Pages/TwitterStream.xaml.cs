@@ -5,7 +5,6 @@ using System.Globalization;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Threading;
@@ -14,13 +13,14 @@ using HubApp.Twitter;
 using Tweetinvi.Models;
 using Tweetinvi.Streaming;
 using Tweetinvi;
+using HubApp.Utilities;
 
 namespace HubApp
 {
     /// <summary>
     /// Interaction logic for TwitterStream.xaml
     /// </summary>
-    public partial class TwitterStream : Page
+    public partial class TwitterStream : TabablePage
     {
         private const int SLEEP_TIME = 5000;
         private const string DEFAULT_TWITTER_PIC = "https://camo.githubusercontent.com/93c261622c63780cb29c6423b0787c8de460aff6/687474703a2f2f636c6f75642e73636f74742e65652f696d616765732f6e756c6c2e706e67";
@@ -40,6 +40,22 @@ namespace HubApp
             InitializeWindowOptions();
         }
 
+        public override void OnPause()
+        {
+            if (this._tweetStream != null)
+            {
+                this._tweetStream.PauseStream();
+            }
+        }
+
+        public override void OnResume()
+        {
+            if (this._tweetStream != null)
+            {
+                this._tweetStream.ResumeStream();
+            }
+        }
+
         private void InitializeTwitterStream()
         {
             Thread thread = new Thread(TwitterView_StartStreaming);
@@ -47,8 +63,7 @@ namespace HubApp
             thread.Start();
         }
 
-
-        public void SetTrack(String track)
+        public void SetTrack(string track)
         {
             this._track = track;
             this.tags.Inlines.Clear();

@@ -26,7 +26,7 @@ namespace HubApp.Utilities
 
         private static void changing(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var anim = new DoubleAnimation((double)e.OldValue, (double)e.NewValue, new TimeSpan(0, 0, 0, 0, 250));
+            var anim = new DoubleAnimation((double)e.OldValue, (double)e.NewValue, new TimeSpan(0, 0, 0, 0, 500));
             (d as ProgressBar).BeginAnimation(ProgressBar.ValueProperty, anim, HandoffBehavior.Compose);
         }
     }

@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Collections.Generic;
+using HubApp.Utilities;
 
 namespace HubApp
 {
@@ -11,7 +12,7 @@ namespace HubApp
     /// </summary>
     public partial class MainWindow : Window
     {
-        private Dictionary<Page, int> _pageMappings;
+        private Dictionary<TabablePage, int> _pageMappings;
         private int _numberOfPagesSpawned;
         private WindowState _lastWindowState;
         private WindowStyle _lastWindowStyle;
@@ -51,11 +52,11 @@ namespace HubApp
 
         private void InitializeFrameOptions()
         {
-            this._pageMappings = new Dictionary<Page, int>();
+            this._pageMappings = new Dictionary<TabablePage, int>();
             this._numberOfPagesSpawned = 0;
         }
 
-        public void SetWindow(Page page)
+        public void SetWindow(TabablePage page)
         {
             if (!this._pageMappings.ContainsKey(page))
             {
@@ -65,7 +66,7 @@ namespace HubApp
             }
             else
             {
-                Page currentPage = (Page)this.mainFrame.Content;
+                TabablePage currentPage = (TabablePage) this.mainFrame.Content;
                 int currentPageNumber = this._pageMappings[currentPage];
                 int newPageNumber = this._pageMappings[page];
                 bool isInFront = newPageNumber > currentPageNumber;
