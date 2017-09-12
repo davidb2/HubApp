@@ -12,3 +12,7 @@ Shows live data for a specified hashtag on Twitter.
 <img src="HubApp/Resources/hub_app_trivia.gif" width=1200 height=500 />
 
 Displays trivia questions from different categories.
+
+---
+
+Note: The videos above came out a little choppy because I was running a screen recorder on top of the program.
