@@ -8,3 +8,7 @@ This is a Twitter streamer and a trivia player used for public televisions/displ
 Shows live data for a specified hashtag on Twitter.
 
 ## Trivia Player
+
+<img src="HubApp/Resources/hub_app_trivia.gif" width=1200 height=500 />
+
+Displays trivia questions from different categories.
