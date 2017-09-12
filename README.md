@@ -3,7 +3,7 @@ This is a Twitter streamer and a trivia player used for public televisions/displ
 
 ## Twitter Streamer
 
-<img src="HubApp/Resources/hub_app.webm" width=400 height=250 />
+<img src="HubApp/Resources/hub_app_twitter.gif" width=400 height=250 />
 
 Shows live data for a specified hashtag on Twitter.
 
